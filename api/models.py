@@ -3,8 +3,27 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.db import models
+
 class User(AbstractUser):
-    pass
+    groups = models.ManyToManyField(
+        Group,
+        related_name='custom_user_set',  # Cambia el related_name para evitar conflicto
+        blank=True,
+        help_text='The groups this user belongs to.',
+        verbose_name='groups',
+        related_query_name='user',
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='custom_user_set',  # Cambia el related_name para evitar conflicto
+        blank=True,
+        help_text='Specific permissions for this user.',
+        verbose_name='user permissions',
+        related_query_name='user',
+    )
+
 
 class Project(models.Model):
     name = models.CharField(max_length=100)
