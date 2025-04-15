@@ -123,3 +123,10 @@ class RemoveUserFromProjectView(APIView):
             return Response({"message": "Usuario removido del proyecto"}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "El usuario no es miembro del proyecto"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+from django.http import HttpResponse
+
+def home_view(request):
+    return HttpResponse("Bienvenido a Task Manager")
