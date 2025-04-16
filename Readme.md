@@ -76,4 +76,4 @@ Authorization: Bearer
 ## Repositorio
 
 El código está disponible en el siguiente repositorio público de GitHub:  
-[https://github.com/tuusuario/task-manager-api](https://github.com/tuusuario/task-manager-api)
+[https://github.com/carlapvalera/task_manager](https://github.com/carlapvalera/task_manager)
