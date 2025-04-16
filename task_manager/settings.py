@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    'rest_framework',
+    'rest_framework_simplejwt',
     # tu app
     'api',
 ]
@@ -89,3 +90,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Agrega esta línea para indicar el modelo User personalizado
 AUTH_USER_MODEL = 'api.User'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'data' / 'db.sqlite3',
+    }
+}

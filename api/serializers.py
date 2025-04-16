@@ -37,6 +37,8 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
+
 class ProjectSerializer(serializers.ModelSerializer):
     leader = UserSerializer(read_only=True)
     members = UserSerializer(many=True, read_only=True)

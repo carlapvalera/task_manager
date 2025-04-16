@@ -130,3 +130,15 @@ from django.http import HttpResponse
 
 def home_view(request):
     return HttpResponse("Bienvenido a Task Manager")
+
+
+from .models import User
+from .serializers import RegisterUserSerializer
+
+class RegisterUserView(APIView):
+    def post(self, request):
+        serializer = RegisterUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Usuario registrado exitosamente"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
