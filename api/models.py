@@ -7,6 +7,24 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
 class User(AbstractUser):
+    """
+    User model extending AbstractUser.
+
+    Attributes:
+        groups (ManyToManyField): A many-to-many relationship to the Group model.
+            - `related_name='custom_user_set'`: Custom related name to avoid conflicts.
+            - `blank=True`: Field is optional.
+            - `help_text`: Description of the groups this user belongs to.
+            - `verbose_name='groups'`: Human-readable name for the field.
+            - `related_query_name='user'`: Name to use for reverse queries.
+
+        user_permissions (ManyToManyField): A many-to-many relationship to the Permission model.
+            - `related_name='custom_user_set'`: Custom related name to avoid conflicts.
+            - `blank=True`: Field is optional.
+            - `help_text`: Description of specific permissions for this user.
+            - `verbose_name='user permissions'`: Human-readable name for the field.
+            - `related_query_name='user'`: Name to use for reverse queries.
+    """
     groups = models.ManyToManyField(
         Group,
         related_name='custom_user_set',  # Cambia el related_name para evitar conflicto
@@ -26,6 +44,17 @@ class User(AbstractUser):
 
 
 class Project(models.Model):
+    """
+    Represents a project within the task management system.
+    Attributes:
+        name (str): The name of the project, limited to 100 characters.
+        description (str): A detailed description of the project.
+        is_archived (bool): Indicates whether the project is archived. Defaults to False.
+        leader (User): The user who leads the project. Can be null if no leader is assigned.
+        members (QuerySet[User]): A many-to-many relationship representing the users who are members of the project.
+    Methods:
+        __str__(): Returns the name of the project as its string representation.
+    """
     name = models.CharField(max_length=100)
     description = models.TextField()
     is_archived = models.BooleanField(default=False)
@@ -36,6 +65,25 @@ class Project(models.Model):
         return self.name
 
 class Task(models.Model):
+    """
+    Task model represents a task within a project management system.
+    Attributes:
+        STATUS_CHOICES (list of tuple): Defines the possible statuses for a task:
+            - 'pending': Task is pending.
+            - 'in_progress': Task is in progress.
+            - 'completed': Task is completed.
+        PRIORITY_CHOICES (list of tuple): Defines the possible priority levels for a task:
+            - 'low': Low priority.
+            - 'medium': Medium priority.
+            - 'high': High priority.
+        name (CharField): The name of the task, with a maximum length of 200 characters.
+        status (CharField): The current status of the task, chosen from STATUS_CHOICES. Defaults to 'pending'.
+        priority (CharField): The priority level of the task, chosen from PRIORITY_CHOICES. Defaults to 'medium'.
+        project (ForeignKey): A reference to the associated Project. Deleting the project will delete its tasks.
+        assigned_to (ForeignKey): A reference to the User assigned to the task. Can be null, and defaults to None. If the user is deleted, the field is set to null.
+    Methods:
+        __str__(): Returns the name of the task as its string representation.
+    """
     STATUS_CHOICES = [
         ('pending', 'Pendiente'),
         ('in_progress', 'En Progreso'),

@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from api.views import home_view  # Importa la vista que acabas de crear
+from api.views import home_view 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
